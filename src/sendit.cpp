@@ -14,8 +14,10 @@ int main(int argc, char* argv[]) {
   for (int i = 1; i < argc; i++) {
     std::string cmd(argv[i]);
     if (cmd == "-n") {
+      if (!(argc > i + 1)) { std::cerr << "not enough args\n"; return 2; }
       username = argv[++i];
     } else if (cmd == "-m") {
+      if (!(argc > i + 1)) { std::cerr << "not enough args\n"; return 2; }
       message = argv[++i];
     }
   }
