@@ -1,0 +1,8 @@
+-std=c++20
+-Wall
+-Wextra
+-O2
+-MMD
+-MP
+-lssl
+-lcrypto
