@@ -22,6 +22,8 @@ The admin can send admin messages (the admin functionality will expand). You nee
 sendit -m admin-setpwd # interactive
 sendit -m admin-setpwd:password # non-interactive (obv)
 ```
+It is better to use interactive mode as it is safer.
+
 The password is hashed with SHA256 and stored in the statedir in the file "admin-pwd".
 
 To send messages as a user (including admin - for admin messages it asks for the password):
