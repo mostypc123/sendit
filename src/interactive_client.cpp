@@ -64,6 +64,14 @@ namespace sendit {
 
       if (msg_commands(msg, admin) == SHOULD_EXIT) continue;
 
+      if (msg == "exit") {
+        sendit::helpers::separator();
+        std::cout << "\nGoodbye!\n";
+        sendit::Message left(username, "someone left", state);
+        left.write();
+        std::exit(0);
+      }
+
       sendit::Message message(msg, username, state);
       message.write();
     }
