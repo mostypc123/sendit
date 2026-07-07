@@ -36,13 +36,13 @@ int main(int argc, char* argv[]) {
 
   sendit::AdminPassword admin(state);
 
-  if (!msg_commands(message, admin)) {
-    return 1;
-  }
-
   if (username == "admin") {
     std::cout << "writing as the admin user requires you to enter the password.\n";
     admin.verify();
+
+    if (!msg_commands(message, admin)) {
+      return 1;
+    }
 
     return 0;
   }

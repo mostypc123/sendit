@@ -62,7 +62,10 @@ namespace sendit {
       // reload chat content (you ask? i did say this client is minimal)
       if (msg == "reload") continue;
 
-      if (msg_commands(msg, admin) == SHOULD_EXIT) continue;
+      if (
+        username == "admin" &&
+        msg_commands(msg, admin) == SHOULD_EXIT
+      ) continue;
 
       sendit::Message message(msg, username, state);
       message.write();

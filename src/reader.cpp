@@ -39,7 +39,15 @@ namespace sendit {
         std::ifstream file(state.get_path() + "/user-color-" + parts[0]);
         std::string color;
         getline(file, color); // no newline expected, no loop
-        std::cout << color << parts[0] << "\e[0m:" << parts[1] << "\n";
+        std::string msg;
+        for (int i = 1; i < (int)parts.size(); i++) {
+            if (i > 1) msg += ":";
+            msg += parts[i];
+        }
+        if (!data.empty() && data.back() == ':') {
+            msg += ":";
+        }
+        std::cout << color << parts[0] << "\e[0m:" << msg << "\n";
         continue;
       } if (admin_msg_next) {
         data = "\e[93m" + data + "\e[0m";
