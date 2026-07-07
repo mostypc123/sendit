@@ -65,4 +65,4 @@ admin-setmotd:unset
 
 ---
 
-The .hh files include implementations because i am NOT going to use the ugly classname::funcname() {code} syntax. Thank you.
+The .hh files include implementations because i am NOT going to use the ugly classname::funcname() {code} syntax. Thank you. Oh and, not everything is a vuln. "Weak RNG" is not a vuln for COLOR GENERATION. Thank you again.

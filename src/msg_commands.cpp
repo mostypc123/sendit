@@ -15,9 +15,11 @@ bool msg_commands(
     admin.setpassword();
     return SHOULD_EXIT;
   } else if (message.starts_with("admin-setmotd:")) {
+    admin.verify();
     auto parts = sendit::helpers::split(message);
     if (parts.size() != 2) {
       std::cerr << "invalid arguments" << std::endl;
+      return SHOULD_EXIT;
     }
     admin.set_motd(parts[1]);
     return SHOULD_EXIT;

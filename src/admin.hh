@@ -50,7 +50,7 @@ namespace sendit {
       } else {
         std::cout << "no admin password set, to claim admin rights, send:\n" <<
           "  admin-setpwd\n" <<
-          "which asks for input, or just send:\n" <<
+          "which asks for input, or (with a major security risk) just send:\n" <<
           "  admin-setpwd:MyPassword\n" << std::endl;
       }
     }
@@ -76,7 +76,9 @@ namespace sendit {
       write();
     }
 
-    /* use when message is admin-setpwd:... */
+    /* use when message is admin-setpwd:...
+     * DO NOT USE THIS, IT IS A SECURITY HOLE
+     */
     void setpassword(const std::string& message) {
       if (is_set()) { std::cout << "already set\n"; std::exit(1); }
 
