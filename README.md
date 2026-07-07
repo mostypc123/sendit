@@ -41,3 +41,7 @@ sendit
 ```
 
 While the reader is running, it assigns a color to every user that does not have one.
+
+---
+
+The .hh files include implementations because i am NOT going to use the ugly classname::funcname() {code} syntax. Thank you.
