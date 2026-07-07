@@ -12,6 +12,7 @@ make -j$(nproc)
 ```
 
 To create a new "instance", just send a message in a new directory. If you are root, sendit automatically uses `/run/sendit`.
+Otherwise, it uses `./.sendit`.
 
 > TODO: support custom directories, should be easy to just edit the StateDir class
 
@@ -21,3 +22,20 @@ The admin can send admin messages (the admin functionality will expand). You nee
 sendit -m admin-setpwd # interactive
 sendit -m admin-setpwd:password # non-interactive (obv)
 ```
+The password is hashed with SHA256 and stored in the statedir in the file "admin-pwd".
+
+To send messages as a user (including admin - for admin messages it asks for the password):
+
+```bash
+sendit -m message -n MyName
+```
+
+If no name is set, `anonymous` is used.
+
+To read all messages, just run sendit:
+
+```bash
+sendit
+```
+
+While the reader is running, it assigns a color to every user that does not have one.
