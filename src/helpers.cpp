@@ -51,7 +51,6 @@ namespace sendit::helpers {
   }
 
   std::vector<int> random_rgb_color() {
-    std::srand(std::time(0));
     std::vector<int> result;
     for ([[maybe_unused]] int i : {0, 1, 2}) {
       result.push_back(std::rand() % 256);

@@ -1,10 +1,13 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "message.hh"
 #include "state_dir.hh"
 #include "admin.hh"
 #include "reader.hh"
 
 int main(int argc, char* argv[]) {
+  std::srand(std::time(0));
   std::string message = "Sending the default message.";
   std::string username = "anonymous";
 
