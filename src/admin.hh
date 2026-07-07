@@ -54,11 +54,7 @@ namespace sendit {
     }
 
     bool is_set() {
-      if (std::filesystem::exists(statedir->get_path() + "/admin-pwd")) {
-        return true;
-      } else {
-        return false;
-      }
+      return std::filesystem::exists(statedir->get_path() + "/admin-pwd") ? true : false;
     }
 
     /* use when message is just admin-setpwd */
