@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -5,6 +6,7 @@
 #include "state_dir.hh"
 #include "admin.hh"
 #include "reader.hh"
+#include "interactive_client.hh"
 
 int main(int argc, char* argv[]) {
   std::srand(std::time(0));
@@ -19,6 +21,8 @@ int main(int argc, char* argv[]) {
     } else if (cmd == "-m") {
       if (!(argc > i + 1)) { std::cerr << "not enough args\n"; return 2; }
       message = argv[++i];
+    } else if (cmd == "-i") {
+      return sendit::interactive_client();
     }
   }
 
@@ -32,26 +36,28 @@ int main(int argc, char* argv[]) {
 
   sendit::AdminPassword admin(state);
 
-  if (message.starts_with("admin-setpwd:")) {
-    admin.setpassword(message);
-    std::exit(0);
-  } else if (message == "admin-setpwd") {
-    admin.setpassword();
-    std::exit(0);
+  if (!msg_commands(message, admin)) {
+    return 1;
   }
 
   if (username == "admin") {
     std::cout << "writing as the admin user requires you to enter the password.\n";
     admin.verify();
 
-    sendit::AdminMessage msg(message, username, state);
-    msg.write();
-
     return 0;
   }
 
   sendit::Message msg(message, username, state);
   msg.write();
+
+  std::ifstream motd(state.get_path() + "/motd");
+  if (!motd.is_open()) {
+    // motd is not set, whatever
+    return 0;
+  }
+  std::string motd_content;
+  getline(motd, motd_content); // no loop needed for oneline
+  std::cout << motd_content << "\n";
 
   return 0;
 }

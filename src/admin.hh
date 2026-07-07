@@ -8,7 +8,8 @@
 #include "sha256.hh"
 #include "split.hh"
 #include "state_dir.hh"
-#include "term_echo.hh"
+#include "terminal.hh"
+#include "altmsg.hh"
 
 namespace sendit {
 
@@ -17,6 +18,7 @@ namespace sendit {
     StateDir *statedir;
     std::string sha256;
     std::string& hash = sha256;
+    bool no_ask_pwd = false;
 
     void set(
       std::string& sha256,
@@ -94,17 +96,49 @@ namespace sendit {
     }
 
     void verify() {
-      std::cout << "enter admin password: ";
-      std::string pwd;
-      sendit::helpers::echo_off();
-      std::cin >> pwd;
-      sendit::helpers::echo_on();
+      if (!no_ask_pwd) {
+        std::cout << "enter admin password: ";
+        std::string pwd;
+        sendit::helpers::echo_off();
+        std::cin >> pwd;
+        sendit::helpers::echo_on();
 
-      pwd = sendit::helpers::sha256(pwd);
-      if (pwd != sha256) {
-        std::cerr << "wrong password" << std::endl;
+        pwd = sendit::helpers::sha256(pwd);
+        if (pwd != sha256) {
+          std::cerr << "wrong password" << std::endl;
+          std::exit(1);
+        }
+
+        std::cout << "\n";
+      }
+    }
+
+    /* dangerous - used ONLY in the interactive clients login */
+    void dont_ask_for_pwd() {
+      no_ask_pwd = true;
+    }
+
+    void set_motd(const std::string& msg) {
+      if (msg == "unset") {
+        try {
+          std::filesystem::remove(statedir->get_path() + "/motd");
+        } catch (const std::filesystem::filesystem_error& e) {
+          std::cout << e.what() << "\n";
+          std::exit(1);
+        }
+        sendit::helpers::alt_msg("motd was unset by admin", "motd", *statedir);
+        return;
+      }
+
+      std::ofstream motd(statedir->get_path() + "/motd");
+      if (!motd.is_open()) {
+        std::cerr << "failed to open stream\n";
         std::exit(1);
       }
+      motd << msg;
+      motd.close();
+
+      sendit::helpers::alt_msg("motd was set by admin", "motd", *statedir);
     }
   };
 

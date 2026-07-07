@@ -9,6 +9,15 @@
 #include <sys/file.h>
 #include <unistd.h>
 #include "state_dir.hh"
+#include "admin.hh"
+
+#define SHOULD_EXIT false
+#define RUN true
+
+bool msg_commands(
+  const std::string& message,
+  sendit::AdminPassword& admin
+);
 
 namespace sendit {
 
@@ -36,10 +45,13 @@ namespace sendit {
     }
 
     /* Returns formatted message to write. */
-    virtual inline std::string fmt_message(
+    static inline std::string fmt_message(
       const std::string& content,
       const std::string& name
     ) {
+      if (name == "admin") {
+        return "VERIFIED ADMIN MESSAGE:\n  << " + content + " >>";
+      }
       return name + ": " + content;
     }
 
@@ -85,19 +97,6 @@ namespace sendit {
       flock(fd, LOCK_UN);
       close(fd);
     }
-  };
-
-  class AdminMessage : public Message {
-  protected:
-    virtual inline std::string fmt_message(const std::string& content, const std::string&) override {
-      return "VERIFIED ADMIN MESSAGE:\n  << " + content + " >>";
-    }
-  public:
-    AdminMessage(
-      std::string content,
-      std::string user,
-      sendit::StateDir& statedir
-    ): Message(content, user, statedir) {}
   };
 
 } // namespace sendit
