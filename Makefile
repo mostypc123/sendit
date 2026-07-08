@@ -10,7 +10,7 @@ TARGET = sendit
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
 obj/%.o: src/%.cpp | obj
 	$(CXX) $(CXXFLAGS) -MF $(@:.o=.dep) -c -o $@ $<
@@ -19,7 +19,7 @@ obj:
 	mkdir -p $@
 
 clean:
-	rm -rf obj
+	rm -rf obj $(TARGET)
 
 rebuild: clean all
 

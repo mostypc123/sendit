@@ -61,7 +61,7 @@ namespace sendit {
 
     /* use when message is just admin-setpwd */
     void setpassword() {
-      if (is_set()) { std::cout << "already set\n"; std::exit(1); }
+      if (is_set()) { verify(); }
 
       std::cout << "set a password: ";
       std::string password;
@@ -80,7 +80,12 @@ namespace sendit {
      * DO NOT USE THIS, IT IS A SECURITY HOLE
      */
     void setpassword(const std::string& message) {
-      if (is_set()) { std::cout << "already set\n"; std::exit(1); }
+      std::cerr << "\e[91mIt is better to use the admin-setpwd command" <<
+        " without the password in it, because the admin-setpwd:... syntax is insecure.\e[0m\n" <<
+        "press enter to continue";
+      std::cin.get();
+
+      if (is_set()) { verify(); }
 
       auto passwordmsg = sendit::helpers::split(message);
       if (passwordmsg.size() != 2) {
